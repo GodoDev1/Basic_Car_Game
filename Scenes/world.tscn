@@ -1,0 +1,87 @@
+[gd_scene load_steps=11 format=3 uid="uid://bg6f5012q33jo"]
+
+[ext_resource type="Texture2D" uid="uid://cpwiyoo7664vj" path="res://cars/Models/texture_10.png" id="1_k0juu"]
+[ext_resource type="PackedScene" uid="uid://ci52bv1m15cbs" path="res://cars/Doge.tscn" id="1_nnsk1"]
+[ext_resource type="Texture2D" uid="uid://bm30au8mjfc2f" path="res://addons/virtual_joystick/textures/joystick_base_outline.png" id="2_4wyf3"]
+[ext_resource type="Texture2D" uid="uid://bkvmydfn5saxg" path="res://addons/virtual_joystick/textures/joystick_tip.png" id="3_k0juu"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_k0juu"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_71j4m"]
+sky_material = SubResource("ProceduralSkyMaterial_k0juu")
+
+[sub_resource type="Environment" id="Environment_qfnet"]
+background_mode = 2
+sky = SubResource("Sky_71j4m")
+tonemap_mode = 2
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_e5uuo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_71j4m"]
+albedo_color = Color(0.56402415, 0.56402415, 0.56402415, 1)
+albedo_texture = ExtResource("1_k0juu")
+uv1_scale = Vector3(-1.588, -1.588, -1.588)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_nnsk1"]
+points = PackedVector3Array(-1, 0, -1, -1, 0, 1, 1, 0, -1, 1, 0, 1)
+
+[node name="world" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_qfnet")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+transform = Transform3D(200, 0, 0, 0, 200, 0, 0, 0, 200, 0, 0, 0)
+mesh = SubResource("PlaneMesh_e5uuo")
+surface_material_override/0 = SubResource("StandardMaterial3D_71j4m")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Floor"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_nnsk1")
+
+[node name="car" parent="." instance=ExtResource("1_nnsk1")]
+
+[node name="ui" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="up" type="TouchScreenButton" parent="ui"]
+position = Vector2(973.99994, 334)
+scale = Vector2(0.57, 1.015)
+texture_normal = ExtResource("2_4wyf3")
+action = "ui_up"
+
+[node name="back" type="TouchScreenButton" parent="ui"]
+position = Vector2(709, 394)
+scale = Vector2(1, 0.62499994)
+texture_normal = ExtResource("2_4wyf3")
+action = "ui_down"
+
+[node name="left" type="TouchScreenButton" parent="ui"]
+position = Vector2(61, 407)
+scale = Vector2(1, 0.435)
+texture_normal = ExtResource("2_4wyf3")
+action = "ui_left"
+
+[node name="right" type="TouchScreenButton" parent="ui"]
+position = Vector2(324, 398.00003)
+scale = Vector2(1, 0.48)
+texture_normal = ExtResource("2_4wyf3")
+action = "ui_right"
+
+[node name="handbrake" type="TouchScreenButton" parent="ui"]
+position = Vector2(768, 154)
+scale = Vector2(1.36, 1.51)
+texture_normal = ExtResource("3_k0juu")
+action = "ui_select"
